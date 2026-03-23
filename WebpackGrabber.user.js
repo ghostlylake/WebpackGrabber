@@ -160,6 +160,17 @@ Object.defineProperty(Function.prototype, "m", {
                     const id = this.findId(...codes);
                     return id && this.require(id);
                 },
+                findIds(...codes) {
+                    const found = [];
+                    const filter = this.filters.byCode(...codes);
+                    for (const id in this.modules) {
+                        if (filter(this.modules[id])) found.push(id);
+                    }
+                    return found;
+                },
+                findModulesBySourceCode(...codes) {
+                    return this.findIds(...codes).map((id) => id && this.require(id));
+                },
             };
 
             delete Function.prototype.m;
